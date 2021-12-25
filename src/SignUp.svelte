@@ -1,6 +1,6 @@
 <script>
     import { initializeApp } from "firebase/app";
-	import { getAuth, signInWithPopup, onAuthStateChanged, GoogleAuthProvider } from "firebase/auth";
+	import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
     import Navbar from "./components/Navbar.svelte";
     import { createEventDispatcher } from "svelte";
 
@@ -33,16 +33,6 @@
             errorCodeCheck = error.code;
         });
     }
-
-    // Check if already signed in once
-    function CheckAuthStat() {
-        onAuthStateChanged(auth, user =>{
-            if(user){
-                localStorage.setItem("UserData", user);
-            }
-        });
-    }
-    CheckAuthStat();
 </script>
 <Navbar user={user}/>
 <h1 class="display-2 text-center text-white mt-5 pb- roboto-font">Welcome to <strong>FireChat</strong>🔥</h1>
