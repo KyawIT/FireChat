@@ -1,10 +1,11 @@
 <script>
+	// Add Sidebar to add Logout
 	import SignUp from "./SignUp.svelte";
 	import Navbar from "./components/Navbar.svelte";
 	import Input from "./components/Input.svelte";
 	import Message from "./components/Message.svelte";
 	import { initializeApp } from "firebase/app";
-    import { getFirestore, collection, onSnapshot, query, doc} from "firebase/firestore";  
+    import { getFirestore, collection, onSnapshot } from "firebase/firestore";  
     const firebaseConfig = {
 		apiKey: "AIzaSyARRsepKYfvzCk7VT5BjVOeLr-4roSPcb4",
 		authDomain: "svelte-chat-app-988d6.firebaseapp.com",
@@ -17,18 +18,16 @@
     const db = getFirestore();
     const docRef = collection(db, "Chat");
 
-	let dataMsg = [], userLogged = localStorage.getItem("UserData");
+	let dataMsg = [], userLogged = localStorage.getItem("UserData"), currentDate;
 
 	onSnapshot(docRef,(snapShot) =>{
 		dataMsg = []
 		dataMsg = (snapShot.docs.map(doc => doc.data()))
-		console.log(dataMsg)
 	} )
 
 	const AddMsg = e =>{
 		let newMsg = e.detail;
-		console.log(dataMsg)
-		dataMsg = [newMsg, ...dataMsg];
+		dataMsg = [...dataMsg, newMsg];
 	}
 
 	const GetUserInfo = e =>{
@@ -36,7 +35,6 @@
 		localStorage.setItem("UserImage", e.detail.photoURL);
 		localStorage.setItem("UID", e.detail.uid);
 	}
-	
 </script>
 {#if !userLogged}
 <SignUp on:GetUser={GetUserInfo}/>
@@ -46,7 +44,14 @@
 	<main>
 		{#if dataMsg}
 			{#each dataMsg.sort((a,b) => a.date - b.date) as element}
-				<Message user={element.user} userImg={element.userImg} message={element.msg} date={element.date}/>
+				<Message user={element.user} userImg={element.userImg} message={element.msg} date={
+					String(new Date().getDate()).padStart(2, '0') + "." + 
+					String(new Date().getMonth() + 1).padStart(2, '0') + "." +
+					new Date().getFullYear() + " at " + 
+					new Date().getHours() + ":" + 
+					new Date().getMinutes() + ":" +
+					new Date().getSeconds()
+				}/>
 			{/each}
 		{/if}
 	</main>

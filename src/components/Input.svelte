@@ -22,7 +22,7 @@
         var dd = String(currentDate.getDate()).padStart(2, '0');
         var mm = String(currentDate.getMonth() + 1).padStart(2, '0');
         var yyyy = currentDate.getFullYear();
-        var hours = currentDate.getHours();
+        var hours = currentDate.getHours(); 
         var minutes = currentDate.getMinutes();
         var seconds = currentDate.getSeconds();
         minutes < 10 ? minutes = "0"+ minutes : minutes;
@@ -42,7 +42,7 @@
                 msg: inputMessage,
                 date: Date.now()
             }
-            addDoc(docRef, MessageInfo);
+            addDoc(docRef, MessageInfo); // Add to Firebase
             dispatch("SendMessage", MessageInfo);
             inputMessage = "";
         }
